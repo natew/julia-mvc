@@ -14,6 +14,12 @@ module App
     _models[name] = methods
   end
 
+  module Controller
+    function render(thing)
+      println(thing)
+    end
+  end
+
   function controller(actions, name::String)
     println("Adding controller $name, $actions")
     _controllers[name] = actions
@@ -30,12 +36,11 @@ module App
   function run()
     # Main loop of web app
     # For now just to test, lets just call posts#index
-    # run_route(routes["/"])
+    # run_route("/")
   end
 
-  function run_route(path::String)
-
-  end
+  # this is totally wrong
+  run_route(path::String) = exec(_routes[path])
 
 end
 
@@ -58,9 +63,11 @@ App.model("Post") do
 end
 
 ### Controllers
-App.controller("Posts") do
+App.controller("posts") do
+  using App.Controller
+
   function index()
-    Post.title()
+    render(Post.title())
   end
 end
 
